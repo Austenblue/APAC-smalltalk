@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 from datetime import datetime
 import pytz
+import time
 
 # List of APAC capital cities and their respective time zones
 apac_capitals = {
@@ -33,11 +34,11 @@ apac_capitals = {
 }
 
 # Function to get weather data
-def get_weather(city):
+def get_weather(lat, lon):
     base_url = 'https://api.open-meteo.com/v1/forecast'
     params = {
-        'latitude': 0,  # Placeholder for latitude
-        'longitude': 0,  # Placeholder for longitude
+        'latitude': lat,
+        'longitude': lon,
         'current_weather': 'true'
     }
     response = requests.get(base_url, params=params)
@@ -74,19 +75,28 @@ city_coordinates = {
 }
 
 # Streamlit app
-st.title('Weather and Time in APAC Capital Cities')
+st.title('Small Talk Dashboard')
 
-for country, (city, timezone) in apac_capitals.items():
-    st.header(f"{city}, {country}")
+# Dropdown to select a country
+selected_country = st.selectbox('Select a country', list(apac_capitals.keys()))
+
+if selected_country:
+    city, timezone = apac_capitals[selected_country]
+    st.header(f"{city}, {selected_country}")
 
     # Get current time
     tz = pytz.timezone(timezone)
-    local_time = datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S')
-    st.write(f"Local Time: {local_time}")
+    local_time = datetime.now(tz)
+    formatted_date = local_time.strftime('%Y-%m-%d')
+    formatted_time = local_time.strftime('%H:%M:%S')
+
+    st.write(f"Local Date: {formatted_date}")
+    st.write(f"Local Time: {formatted_time}")
+    st.markdown(f"<h1>{local_time.strftime('%H:%M:%S')}</h1>", unsafe_allow_html=True)
 
     # Get weather data
     lat, lon = city_coordinates[city]
-    weather_data = get_weather(city)
+    weather_data = get_weather(lat, lon)
     if weather_data.get('current_weather'):
         temp = weather_data['current_weather']['temperature']
         weather_description = weather_data['current_weather']['weathercode']
@@ -94,5 +104,3 @@ for country, (city, timezone) in apac_capitals.items():
         st.write(f"Weather: {weather_description}")
     else:
         st.write("Weather data not available")
-
-    st.write("---")

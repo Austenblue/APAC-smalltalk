@@ -2,7 +2,6 @@ import streamlit as st
 import requests
 from datetime import datetime
 import pytz
-from PIL import Image
 
 # List of APAC capital cities, their respective time zones, and flags
 apac_capitals = {
@@ -111,9 +110,12 @@ def get_weather_emoji(weather_code):
 # Streamlit app
 st.title('Small Talk Dashboard')
 
-# Sidebar to list all countries
-st.sidebar.title("Countries in APAC")
-selected_country = st.sidebar.selectbox('Select a country', list(apac_capitals.keys()))
+# Dropdown to select a country on the main page
+selected_country = st.selectbox('Select a country', list(apac_capitals.keys()))
+
+# Sidebar to list all cities
+st.sidebar.title("Cities in APAC")
+selected_city = st.sidebar.selectbox('Select a city', list(city_coordinates.keys()))
 
 if selected_country:
     city, timezone, flag = apac_capitals[selected_country]
@@ -140,3 +142,31 @@ if selected_country:
         st.write(f"Temperature: {temp} °C {weather_emoji}")
     else:
         st.write("Weather data not available")
+
+if selected_city:
+    st.sidebar.header(f"Weather in {selected_city}")
+    lat, lon = city_coordinates[selected_city]
+    for country, (city, timezone, flag) in apac_capitals.items():
+        if city == selected_city:
+            break
+
+    # Get current time
+    tz = pytz.timezone(timezone)
+    local_time = datetime.now(tz)
+    formatted_date = local_time.strftime('%Y-%m-%d')
+    formatted_time = local_time.strftime('%I:%M:%S %p')
+    formatted_day = local_time.strftime('%A')
+
+    st.sidebar.write(f"Date: {formatted_date}")
+    st.sidebar.write(f"Day: {formatted_day}")
+    st.sidebar.write(f"Time: {formatted_time}")
+
+    # Get weather data
+    weather_data = get_weather(lat, lon)
+    if weather_data.get('current_weather'):
+        temp = weather_data['current_weather']['temperature']
+        weather_code = weather_data['current_weather']['weathercode']
+        weather_emoji = get_weather_emoji(weather_code)
+        st.sidebar.write(f"Temperature: {temp} °C {weather_emoji}")
+    else:
+        st.sidebar.write("Weather data not available")

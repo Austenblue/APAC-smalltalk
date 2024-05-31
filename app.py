@@ -2,35 +2,36 @@ import streamlit as st
 import requests
 from datetime import datetime
 import pytz
-import time
+from PIL import Image
+import streamlit.components.v1 as components
 
-# List of APAC capital cities and their respective time zones
+# List of APAC capital cities, their respective time zones, and flags
 apac_capitals = {
-    'Australia': ('Canberra', 'Australia/Sydney'),
-    'Bangladesh': ('Dhaka', 'Asia/Dhaka'),
-    'Brunei': ('Bandar Seri Begawan', 'Asia/Brunei'),
-    'Cambodia': ('Phnom Penh', 'Asia/Phnom_Penh'),
-    'China': ('Beijing', 'Asia/Shanghai'),
-    'Fiji': ('Suva', 'Pacific/Fiji'),
-    'India': ('New Delhi', 'Asia/Kolkata'),
-    'Indonesia': ('Jakarta', 'Asia/Jakarta'),
-    'Japan': ('Tokyo', 'Asia/Tokyo'),
-    'Laos': ('Vientiane', 'Asia/Vientiane'),
-    'Malaysia': ('Kuala Lumpur', 'Asia/Kuala_Lumpur'),
-    'Maldives': ('Malé', 'Indian/Maldives'),
-    'Mongolia': ('Ulaanbaatar', 'Asia/Ulaanbaatar'),
-    'Myanmar': ('Naypyidaw', 'Asia/Yangon'),
-    'Nepal': ('Kathmandu', 'Asia/Kathmandu'),
-    'New Zealand': ('Wellington', 'Pacific/Auckland'),
-    'Pakistan': ('Islamabad', 'Asia/Karachi'),
-    'Papua New Guinea': ('Port Moresby', 'Pacific/Port_Moresby'),
-    'Philippines': ('Manila', 'Asia/Manila'),
-    'Singapore': ('Singapore', 'Asia/Singapore'),
-    'South Korea': ('Seoul', 'Asia/Seoul'),
-    'Sri Lanka': ('Sri Jayawardenepura Kotte', 'Asia/Colombo'),
-    'Taiwan': ('Taipei', 'Asia/Taipei'),
-    'Thailand': ('Bangkok', 'Asia/Bangkok'),
-    'Vietnam': ('Hanoi', 'Asia/Ho_Chi_Minh')
+    'Australia': ('Canberra', 'Australia/Sydney', '🇦🇺'),
+    'Bangladesh': ('Dhaka', 'Asia/Dhaka', '🇧🇩'),
+    'Brunei': ('Bandar Seri Begawan', 'Asia/Brunei', '🇧🇳'),
+    'Cambodia': ('Phnom Penh', 'Asia/Phnom_Penh', '🇰🇭'),
+    'China': ('Beijing', 'Asia/Shanghai', '🇨🇳'),
+    'Fiji': ('Suva', 'Pacific/Fiji', '🇫🇯'),
+    'India': ('New Delhi', 'Asia/Kolkata', '🇮🇳'),
+    'Indonesia': ('Jakarta', 'Asia/Jakarta', '🇮🇩'),
+    'Japan': ('Tokyo', 'Asia/Tokyo', '🇯🇵'),
+    'Laos': ('Vientiane', 'Asia/Vientiane', '🇱🇦'),
+    'Malaysia': ('Kuala Lumpur', 'Asia/Kuala_Lumpur', '🇲🇾'),
+    'Maldives': ('Malé', 'Indian/Maldives', '🇲🇻'),
+    'Mongolia': ('Ulaanbaatar', 'Asia/Ulaanbaatar', '🇲🇳'),
+    'Myanmar': ('Naypyidaw', 'Asia/Yangon', '🇲🇲'),
+    'Nepal': ('Kathmandu', 'Asia/Kathmandu', '🇳🇵'),
+    'New Zealand': ('Wellington', 'Pacific/Auckland', '🇳🇿'),
+    'Pakistan': ('Islamabad', 'Asia/Karachi', '🇵🇰'),
+    'Papua New Guinea': ('Port Moresby', 'Pacific/Port_Moresby', '🇵🇬'),
+    'Philippines': ('Manila', 'Asia/Manila', '🇵🇭'),
+    'Singapore': ('Singapore', 'Asia/Singapore', '🇸🇬'),
+    'South Korea': ('Seoul', 'Asia/Seoul', '🇰🇷'),
+    'Sri Lanka': ('Sri Jayawardenepura Kotte', 'Asia/Colombo', '🇱🇰'),
+    'Taiwan': ('Taipei', 'Asia/Taipei', '🇹🇼'),
+    'Thailand': ('Bangkok', 'Asia/Bangkok', '🇹🇭'),
+    'Vietnam': ('Hanoi', 'Asia/Ho_Chi_Minh', '🇻🇳')
 }
 
 # Function to get weather data
@@ -81,18 +82,30 @@ st.title('Small Talk Dashboard')
 selected_country = st.selectbox('Select a country', list(apac_capitals.keys()))
 
 if selected_country:
-    city, timezone = apac_capitals[selected_country]
-    st.header(f"{city}, {selected_country}")
+    city, timezone, flag = apac_capitals[selected_country]
+    st.header(f"{flag} {city}, {selected_country}")
 
     # Get current time
     tz = pytz.timezone(timezone)
     local_time = datetime.now(tz)
     formatted_date = local_time.strftime('%Y-%m-%d')
-    formatted_time = local_time.strftime('%H:%M:%S')
+    formatted_time = local_time.strftime('%I:%M:%S %p')
 
     st.write(f"Local Date: {formatted_date}")
     st.write(f"Local Time: {formatted_time}")
-    st.markdown(f"<h1>{local_time.strftime('%H:%M:%S')}</h1>", unsafe_allow_html=True)
+    
+    # Display visual calendar
+    st.markdown(f"<h1>{formatted_date}</h1>", unsafe_allow_html=True)
+
+    # Display visual clock
+    components.html(f"""
+    <div style="display: flex; justify-content: center; align-items: center; height: 100px;">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" stroke="black" stroke-width="3" fill="none" />
+            <text x="50%" y="50%" text-anchor="middle" dy=".3em" font-size="20">{formatted_time}</text>
+        </svg>
+    </div>
+    """, height=150)
 
     # Get weather data
     lat, lon = city_coordinates[city]
@@ -101,6 +114,6 @@ if selected_country:
         temp = weather_data['current_weather']['temperature']
         weather_description = weather_data['current_weather']['weathercode']
         st.write(f"Temperature: {temp} °C")
-        st.write(f"Weather: {weather_description}")
+        st.write(f"Weather: Clear")  # Update this line with appropriate weather description if needed
     else:
         st.write("Weather data not available")

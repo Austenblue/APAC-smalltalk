@@ -3,7 +3,6 @@ import requests
 from datetime import datetime
 import pytz
 from PIL import Image
-import streamlit.components.v1 as components
 
 # List of APAC capital cities, their respective time zones, and flags
 apac_capitals = {
@@ -34,18 +33,6 @@ apac_capitals = {
     'Vietnam': ('Hanoi', 'Asia/Ho_Chi_Minh', '🇻🇳')
 }
 
-# Function to get weather data
-def get_weather(lat, lon):
-    base_url = 'https://api.open-meteo.com/v1/forecast'
-    params = {
-        'latitude': lat,
-        'longitude': lon,
-        'current_weather': 'true'
-    }
-    response = requests.get(base_url, params=params)
-    data = response.json()
-    return data
-
 # Coordinates for the APAC capitals (latitude, longitude)
 city_coordinates = {
     'Canberra': (-35.282, 149.128),
@@ -75,11 +62,58 @@ city_coordinates = {
     'Hanoi': (21.0285, 105.8542)
 }
 
+# Function to get weather data
+def get_weather(lat, lon):
+    base_url = 'https://api.open-meteo.com/v1/forecast'
+    params = {
+        'latitude': lat,
+        'longitude': lon,
+        'current_weather': 'true'
+    }
+    response = requests.get(base_url, params=params)
+    data = response.json()
+    return data
+
+# Function to get weather emoji
+def get_weather_emoji(weather_code):
+    weather_emojis = {
+        0: '☀️',  # Clear sky
+        1: '🌤️',  # Mainly clear
+        2: '⛅',  # Partly cloudy
+        3: '☁️',  # Overcast
+        45: '🌫️',  # Fog
+        48: '🌫️',  # Depositing rime fog
+        51: '🌦️',  # Drizzle: Light intensity
+        53: '🌦️',  # Drizzle: Moderate intensity
+        55: '🌦️',  # Drizzle: Dense intensity
+        56: '🌦️',  # Freezing Drizzle: Light intensity
+        57: '🌦️',  # Freezing Drizzle: Dense intensity
+        61: '🌧️',  # Rain: Slight intensity
+        63: '🌧️',  # Rain: Moderate intensity
+        65: '🌧️',  # Rain: Heavy intensity
+        66: '🌧️',  # Freezing Rain: Light intensity
+        67: '🌧️',  # Freezing Rain: Heavy intensity
+        71: '❄️',  # Snow fall: Slight intensity
+        73: '❄️',  # Snow fall: Moderate intensity
+        75: '❄️',  # Snow fall: Heavy intensity
+        77: '❄️',  # Snow grains
+        80: '🌨️',  # Rain showers: Slight intensity
+        81: '🌨️',  # Rain showers: Moderate intensity
+        82: '🌨️',  # Rain showers: Violent intensity
+        85: '🌨️',  # Snow showers slight
+        86: '🌨️',  # Snow showers heavy
+        95: '⛈️',  # Thunderstorm: Slight or moderate
+        96: '⛈️',  # Thunderstorm with slight hail
+        99: '⛈️'   # Thunderstorm with heavy hail
+    }
+    return weather_emojis.get(weather_code, '')
+
 # Streamlit app
 st.title('Small Talk Dashboard')
 
-# Dropdown to select a country
-selected_country = st.selectbox('Select a country', list(apac_capitals.keys()))
+# Sidebar to list all countries
+st.sidebar.title("Countries in APAC")
+selected_country = st.sidebar.selectbox('Select a country', list(apac_capitals.keys()))
 
 if selected_country:
     city, timezone, flag = apac_capitals[selected_country]
@@ -90,30 +124,19 @@ if selected_country:
     local_time = datetime.now(tz)
     formatted_date = local_time.strftime('%Y-%m-%d')
     formatted_time = local_time.strftime('%I:%M:%S %p')
+    formatted_day = local_time.strftime('%A')
 
-    st.write(f"Local Date: {formatted_date}")
-    st.write(f"Local Time: {formatted_time}")
-    
-    # Display visual calendar
-    st.markdown(f"<h1>{formatted_date}</h1>", unsafe_allow_html=True)
-
-    # Display visual clock
-    components.html(f"""
-    <div style="display: flex; justify-content: center; align-items: center; height: 100px;">
-        <svg width="100" height="100" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="45" stroke="black" stroke-width="3" fill="none" />
-            <text x="50%" y="50%" text-anchor="middle" dy=".3em" font-size="20">{formatted_time}</text>
-        </svg>
-    </div>
-    """, height=150)
+    st.write(f"Date: {formatted_date}")
+    st.write(f"Day: {formatted_day}")
+    st.write(f"Time: {formatted_time}")
 
     # Get weather data
     lat, lon = city_coordinates[city]
     weather_data = get_weather(lat, lon)
     if weather_data.get('current_weather'):
         temp = weather_data['current_weather']['temperature']
-        weather_description = weather_data['current_weather']['weathercode']
-        st.write(f"Temperature: {temp} °C")
-        st.write(f"Weather: Clear")  # Update this line with appropriate weather description if needed
+        weather_code = weather_data['current_weather']['weathercode']
+        weather_emoji = get_weather_emoji(weather_code)
+        st.write(f"Temperature: {temp} °C {weather_emoji}")
     else:
         st.write("Weather data not available")

@@ -63,31 +63,156 @@ city_coordinates = {
 
 # Fun facts and number of cities for each country
 country_info = {
-    'Australia': ('Australia is home to the world\'s longest fence, the Dingo Fence.', 101),
-    'Bangladesh': ('Bangladesh is the world\'s second-largest producer of jute.', 570),
-    'Brunei': ('Brunei is one of the world\'s wealthiest nations due to its oil and gas reserves.', 1),
-    'Cambodia': ('Cambodia is known for the famous Angkor Wat temple complex.', 26),
-    'China': ('China is the world\'s most populous country.', 685),
-    'Fiji': ('Fiji is made up of over 330 islands.', 6),
-    'India': ('India is the largest democracy in the world.', 4000),
-    'Indonesia': ('Indonesia is made up of over 17,000 islands.', 93),
-    'Japan': ('Japan is home to the world\'s oldest company, Kongo Gumi, founded in 578 AD.', 780),
-    'Laos': ('Laos is the most heavily bombed country in history.', 3),
-    'Malaysia': ('Malaysia is known for its Petronas Twin Towers, once the tallest buildings in the world.', 150),
-    'Maldives': ('Maldives is the flattest country in the world.', 1),
-    'Mongolia': ('Mongolia is the least densely populated country in the world.', 2),
-    'Myanmar': ('Myanmar is home to the world\'s largest book, the Kuthodaw Pagoda.', 330),
-    'Nepal': ('Nepal is home to eight of the world\'s ten highest peaks, including Mount Everest.', 58),
-    'New Zealand': ('New Zealand was the first country to give women the right to vote.', 5),
-    'Pakistan': ('Pakistan has the world\'s largest ambulance network, the Edhi Foundation.', 625),
-    'Papua New Guinea': ('Papua New Guinea has over 800 indigenous languages.', 8),
-    'Philippines': ('The Philippines is the world\'s largest producer of coconuts.', 146),
-    'Singapore': ('Singapore is one of only three surviving city-states in the world.', 1),
-    'South Korea': ('South Korea is known for its advanced technology and high-speed internet.', 79),
-    'Sri Lanka': ('Sri Lanka is known as the Pearl of the Indian Ocean.', 20),
-    'Taiwan': ('Taiwan is known for its night markets and street food.', 23),
-    'Thailand': ('Thailand is the only Southeast Asian country never to have been colonized by a European power.', 117),
-    'Vietnam': ('Vietnam is the largest exporter of cashew nuts and black pepper in the world.', 85)
+    'Australia': (
+        [
+            'Australia is home to the world\'s longest fence, the Dingo Fence.',
+            'The Great Barrier Reef is the largest ecosystem in the world.',
+            'Australia has over 60 separate wine regions.'
+        ], 101),
+    'Bangladesh': (
+        [
+            'Bangladesh is the world\'s second-largest producer of jute.',
+            'The Royal Bengal Tiger is the national animal of Bangladesh.',
+            'Dhaka is known as the city of mosques.'
+        ], 570),
+    'Brunei': (
+        [
+            'Brunei is one of the world\'s wealthiest nations due to its oil and gas reserves.',
+            'Brunei has one of the highest rates of car ownership in the world.',
+            'The country is known for its pristine rainforests.'
+        ], 1),
+    'Cambodia': (
+        [
+            'Cambodia is known for the famous Angkor Wat temple complex.',
+            'Tonle Sap Lake in Cambodia is one of the largest freshwater lakes in Asia.',
+            'Cambodia’s national flag is the only one in the world to feature a building.'
+        ], 26),
+    'China': (
+        [
+            'China is the world\'s most populous country.',
+            'The Great Wall of China is one of the Seven Wonders of the World.',
+            'China has the world\'s largest high-speed rail network.'
+        ], 685),
+    'Fiji': (
+        [
+            'Fiji is made up of over 330 islands.',
+            'Fiji has a unique blend of cultures including Indian, Chinese, and European influences.',
+            'Fiji is known for its crystal-clear waters and coral reefs.'
+        ], 6),
+    'India': (
+        [
+            'India is the largest democracy in the world.',
+            'India has the world\'s second-largest population.',
+            'The Indian film industry, known as Bollywood, produces the most films annually in the world.'
+        ], 4000),
+    'Indonesia': (
+        [
+            'Indonesia is made up of over 17,000 islands.',
+            'Indonesia has the world\'s largest Muslim population.',
+            'The Komodo dragon, the world\'s largest lizard, is native to Indonesia.'
+        ], 93),
+    'Japan': (
+        [
+            'Japan is home to the world\'s oldest company, Kongo Gumi, founded in 578 AD.',
+            'Japan has more than 3,000 McDonald\'s restaurants, the largest number outside the US.',
+            'The Japanese railway system is one of the most efficient in the world.'
+        ], 780),
+    'Laos': (
+        [
+            'Laos is the most heavily bombed country in history.',
+            'Laos is known for its stunning waterfalls and rivers.',
+            'The Plain of Jars in Laos is an archaeological wonder with thousands of large stone jars.'
+        ], 3),
+    'Malaysia': (
+        [
+            'Malaysia is known for its Petronas Twin Towers, once the tallest buildings in the world.',
+            'Malaysia is a melting pot of different cultures and ethnicities.',
+            'Malaysia is home to the world\'s largest cave chamber, the Sarawak Chamber.'
+        ], 150),
+    'Maldives': (
+        [
+            'Maldives is the flattest country in the world.',
+            'Maldives is famous for its luxurious overwater bungalows.',
+            'The Maldives has a 100% literacy rate among youth.'
+        ], 1),
+    'Mongolia': (
+        [
+            'Mongolia is the least densely populated country in the world.',
+            'Mongolia is known for its vast steppes and nomadic culture.',
+            'The Mongolian Empire was the largest contiguous empire in history.'
+        ], 2),
+    'Myanmar': (
+        [
+            'Myanmar is home to the world\'s largest book, the Kuthodaw Pagoda.',
+            'Myanmar has some of the most beautiful and ancient pagodas and temples.',
+            'Myanmar is known for its vibrant traditional festivals.'
+        ], 330),
+    'Nepal': (
+        [
+            'Nepal is home to eight of the world\'s ten highest peaks, including Mount Everest.',
+            'Nepal is known for its rich cultural heritage and festivals.',
+            'Nepal is the only country in the world with a non-rectangular flag.'
+        ], 58),
+    'New Zealand': (
+        [
+            'New Zealand was the first country to give women the right to vote.',
+            'New Zealand has more sheep than people.',
+            'The country is famous for its breathtaking landscapes and outdoor adventures.'
+        ], 5),
+    'Pakistan': (
+        [
+            'Pakistan has the world\'s largest ambulance network, the Edhi Foundation.',
+            'Pakistan is home to some of the highest mountains in the world, including K2.',
+            'Pakistan is known for its rich history and cultural heritage.'
+        ], 625),
+    'Papua New Guinea': (
+        [
+            'Papua New Guinea has over 800 indigenous languages.',
+            'The country is one of the most culturally diverse in the world.',
+            'Papua New Guinea is known for its unique wildlife and marine biodiversity.'
+        ], 8),
+    'Philippines': (
+        [
+            'The Philippines is the world\'s largest producer of coconuts.',
+            'The Philippines consists of over 7,000 islands.',
+            'The country is known for its beautiful beaches and vibrant festivals.'
+        ], 146),
+    'Singapore': (
+        [
+            'Singapore is one of only three surviving city-states in the world.',
+            'Singapore is known for its cleanliness and green spaces.',
+            'The country has a world-class education and healthcare system.'
+        ], 1),
+    'South Korea': (
+        [
+            'South Korea is known for its advanced technology and high-speed internet.',
+            'K-pop and Korean dramas have a huge global following.',
+            'South Korea is famous for its delicious cuisine, including kimchi and Korean BBQ.'
+        ], 79),
+    'Sri Lanka': (
+        [
+            'Sri Lanka is known as the Pearl of the Indian Ocean.',
+            'Sri Lanka has a rich history of ancient civilizations and historical sites.',
+            'The country is famous for its tea plantations and Ceylon tea.'
+        ], 20),
+    'Taiwan': (
+        [
+            'Taiwan is known for its night markets and street food.',
+            'Taiwan has the highest density of convenience stores in the world.',
+            'Taiwan is a leader in technology and innovation, especially in electronics.'
+        ], 23),
+    'Thailand': (
+        [
+            'Thailand is the only Southeast Asian country never to have been colonized by a European power.',
+            'Thailand is known for its beautiful beaches and vibrant nightlife.',
+            'The country is famous for its delicious cuisine, including Thai curry and pad Thai.'
+        ], 117),
+    'Vietnam': (
+        [
+            'Vietnam is the largest exporter of cashew nuts and black pepper in the world.',
+            'Vietnam is known for its stunning landscapes, including Ha Long Bay.',
+            'The country has a rich cultural heritage and history, including ancient temples and pagodas.'
+        ], 85)
 }
 
 # Function to get weather data
@@ -147,13 +272,14 @@ if selected_country:
     st.header(f"{flag} {city}, {selected_country}")
 
     # Additional information
-    fun_fact, num_cities = country_info[selected_country]
+    fun_facts, num_cities = country_info[selected_country]
     st.write(f"**Capital City**: {city}")
     st.write(f"**Number of Cities**: {num_cities}")
     
-    # Display fun fact
-    st.write("**Fun Fact**:")
-    st.write(f"- {fun_fact}")
+    # Display fun facts
+    st.write("**Fun Facts**:")
+    for fact in fun_facts:
+        st.write(f"- {fact}")
 
     # Get current time
     tz = pytz.timezone(timezone)

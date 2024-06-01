@@ -61,6 +61,35 @@ city_coordinates = {
     'Hanoi': (21.0285, 105.8542)
 }
 
+# Fun facts and number of cities for each country
+country_info = {
+    'Australia': ('Australia is home to the world\'s longest fence, the Dingo Fence.', 101),
+    'Bangladesh': ('Bangladesh is the world\'s second-largest producer of jute.', 570),
+    'Brunei': ('Brunei is one of the world\'s wealthiest nations due to its oil and gas reserves.', 1),
+    'Cambodia': ('Cambodia is known for the famous Angkor Wat temple complex.', 26),
+    'China': ('China is the world\'s most populous country.', 685),
+    'Fiji': ('Fiji is made up of over 330 islands.', 6),
+    'India': ('India is the largest democracy in the world.', 4000),
+    'Indonesia': ('Indonesia is made up of over 17,000 islands.', 93),
+    'Japan': ('Japan is home to the world\'s oldest company, Kongo Gumi, founded in 578 AD.', 780),
+    'Laos': ('Laos is the most heavily bombed country in history.', 3),
+    'Malaysia': ('Malaysia is known for its Petronas Twin Towers, once the tallest buildings in the world.', 150),
+    'Maldives': ('Maldives is the flattest country in the world.', 1),
+    'Mongolia': ('Mongolia is the least densely populated country in the world.', 2),
+    'Myanmar': ('Myanmar is home to the world\'s largest book, the Kuthodaw Pagoda.', 330),
+    'Nepal': ('Nepal is home to eight of the world\'s ten highest peaks, including Mount Everest.', 58),
+    'New Zealand': ('New Zealand was the first country to give women the right to vote.', 5),
+    'Pakistan': ('Pakistan has the world\'s largest ambulance network, the Edhi Foundation.', 625),
+    'Papua New Guinea': ('Papua New Guinea has over 800 indigenous languages.', 8),
+    'Philippines': ('The Philippines is the world\'s largest producer of coconuts.', 146),
+    'Singapore': ('Singapore is one of only three surviving city-states in the world.', 1),
+    'South Korea': ('South Korea is known for its advanced technology and high-speed internet.', 79),
+    'Sri Lanka': ('Sri Lanka is known as the Pearl of the Indian Ocean.', 20),
+    'Taiwan': ('Taiwan is known for its night markets and street food.', 23),
+    'Thailand': ('Thailand is the only Southeast Asian country never to have been colonized by a European power.', 117),
+    'Vietnam': ('Vietnam is the largest exporter of cashew nuts and black pepper in the world.', 85)
+}
+
 # Function to get weather data
 def get_weather(lat, lon):
     base_url = 'https://api.open-meteo.com/v1/forecast'
@@ -113,13 +142,18 @@ st.title('Small Talk Dashboard')
 # Dropdown to select a country on the main page
 selected_country = st.selectbox('Select a country', list(apac_capitals.keys()))
 
-# Sidebar to list all cities
-st.sidebar.title("Cities in APAC")
-selected_city = st.sidebar.selectbox('Select a city', list(city_coordinates.keys()))
-
 if selected_country:
     city, timezone, flag = apac_capitals[selected_country]
     st.header(f"{flag} {city}, {selected_country}")
+
+    # Additional information
+    fun_fact, num_cities = country_info[selected_country]
+    st.write(f"**Capital City**: {city}")
+    st.write(f"**Number of Cities**: {num_cities}")
+    
+    # Display fun fact
+    st.write("**Fun Fact**:")
+    st.write(f"- {fun_fact}")
 
     # Get current time
     tz = pytz.timezone(timezone)
@@ -142,31 +176,3 @@ if selected_country:
         st.write(f"Temperature: {temp} °C {weather_emoji}")
     else:
         st.write("Weather data not available")
-
-if selected_city:
-    st.sidebar.header(f"Weather in {selected_city}")
-    lat, lon = city_coordinates[selected_city]
-    for country, (city, timezone, flag) in apac_capitals.items():
-        if city == selected_city:
-            break
-
-    # Get current time
-    tz = pytz.timezone(timezone)
-    local_time = datetime.now(tz)
-    formatted_date = local_time.strftime('%Y-%m-%d')
-    formatted_time = local_time.strftime('%I:%M:%S %p')
-    formatted_day = local_time.strftime('%A')
-
-    st.sidebar.write(f"Date: {formatted_date}")
-    st.sidebar.write(f"Day: {formatted_day}")
-    st.sidebar.write(f"Time: {formatted_time}")
-
-    # Get weather data
-    weather_data = get_weather(lat, lon)
-    if weather_data.get('current_weather'):
-        temp = weather_data['current_weather']['temperature']
-        weather_code = weather_data['current_weather']['weathercode']
-        weather_emoji = get_weather_emoji(weather_code)
-        st.sidebar.write(f"Temperature: {temp} °C {weather_emoji}")
-    else:
-        st.sidebar.write("Weather data not available")
